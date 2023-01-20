@@ -1,4 +1,4 @@
-namespace Zaandam.Api.Test
+namespace Zaandam.Test
 {
     public class UnitTest1
     {

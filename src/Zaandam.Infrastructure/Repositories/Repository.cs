@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Zaandam.Domain.Contracts.Repositories;
+using Zaandam.Domain.Models;
 using Zaandam.Infrastructure.Contexts;
 
 namespace Zaandam.Infrastructure.Repositories;
 
-public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 {
     protected readonly SqlContext Context;
     protected readonly DbSet<TEntity> DbSet;
@@ -15,11 +16,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
         DbSet = Context.Set<TEntity>();
     }
 
+    public virtual async Task<TEntity?> GetByIdAsync(Guid id) => await DbSet.FirstOrDefaultAsync(doc => doc.Id == id);
+
     public virtual async Task AddAsync(TEntity obj) => await DbSet.AddAsync(obj);
-
-    public virtual async Task<TEntity?> GetByAsync(string id) => await DbSet.FindAsync(id);
-         
-    public void SaveChanges() => Context.SaveChanges();    
-
-    public async Task SaveChangesAsync() => await Context.SaveChangesAsync();
 }

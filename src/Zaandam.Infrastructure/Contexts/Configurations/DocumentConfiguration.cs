@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Zaandam.Domain.Models;
 
-namespace Acropolis.Infrastructure.Contexts.Configurations;
+namespace Zaandam.Infrastructure.Contexts.Configurations;
 
 public class DocumentConfiguration : IEntityTypeConfiguration<Document>
 {

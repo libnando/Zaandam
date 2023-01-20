@@ -1,0 +1,11 @@
+﻿namespace Zaandam.Domain.DTOs.Responses;
+
+public class ErrorResponse
+{
+    public ErrorResponse(string message)
+    {
+        Message = message;
+    }
+
+    public string Message { get; private set; }
+}

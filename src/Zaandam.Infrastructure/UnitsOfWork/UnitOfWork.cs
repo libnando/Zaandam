@@ -12,7 +12,5 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
-    public void Commit() => _context.SaveChanges();
-
     public async Task CommitAsync() => await _context.SaveChangesAsync();
 }
