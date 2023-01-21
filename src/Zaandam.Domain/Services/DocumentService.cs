@@ -87,17 +87,12 @@ public class DocumentService : IDocumentService
 
         if ($"{document.Key}".Length > keyMaxChars)
         {
-            errors.Add(new ErrorResponse($"Quantidade caracteres do campo `{nameof(document.Key)}` deve ser menor que {keyMaxChars}."));
+            errors.Add(new ErrorResponse($"Number of characters in field ´{nameof(document.Key)}´ must be less than {keyMaxChars}."));
         }            
 
-        if (string.IsNullOrWhiteSpace(document.Data))
+        if (string.IsNullOrWhiteSpace(document.Data) || !document.Data.IsBase64String())
         {
-            errors.Add(new ErrorResponse($"Campo `{nameof(document.Data)}` inválido"));
-        }            
-
-        if (!document.Data.IsBase64String())
-        {
-            errors.Add(new ErrorResponse($"Campo `{nameof(document.Data)}` não é valor base64 válido."));
+            errors.Add(new ErrorResponse($"Invalid base64 file data."));
         }            
 
         return (!errors.Any(), errors);

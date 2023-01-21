@@ -21,8 +21,10 @@ public class ZWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> 
         {
             services.AddDbContext<SqlContext>(options =>
             {
-                options.UseInMemoryDatabase($"InMemoryZaandamTest-{Guid.NewGuid()}");
+                options.UseInMemoryDatabase($"InMemoryZaandamTest");
             });
         });
+
+        builder.UseEnvironment("Testing");
     }
 }
