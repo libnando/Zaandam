@@ -1,16 +1,42 @@
 namespace Zaandam.Domain.DTOs.Responses;
 
+/// <summary>
+/// Document diff response DTO.
+/// </summary>
 public class DocumentDiffResponse
-{ 
-    public DocumentDiffResponse(bool equal, bool equalSize, IEnumerable<ChunkDiffResponse> diffs)
+{
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="equalsData">Informs if data are equal.</param>
+    /// <param name="equalsSize">Informs if size is equal.</param>
+    /// <param name="size">The dize of document.</param>
+    /// <param name="offsetDiffs">The offset diffs.</param>
+    public DocumentDiffResponse(bool equalsData, bool equalsSize, long size, long[] offsetDiffs)
     {
-        Equal = equal;
-        EqualSize = equalSize;
-        Diffs = diffs;
+        EqualsData = equalsData;
+        EqualsSize = equalsSize;
+        Size = size;
+        OffsetDiffs = offsetDiffs;
     }
 
-    public bool Equal { get; private set; }
+    /// <summary>
+    /// Informs if data are equal.
+    /// </summary>
+    public bool EqualsData { get; private set; }
 
-    public bool EqualSize { get; private set; }
-    public IEnumerable<ChunkDiffResponse> Diffs { get; private set; }
+    /// <summary>
+    /// Informs if size is equal.
+    /// </summary>
+    public bool EqualsSize { get; private set; }
+
+    /// <summary>
+    /// The size of document.
+    /// </summary>
+    public long Size { get; private set; }
+
+    /// <summary>
+    /// The offset diffs.
+    /// </summary>
+    public long[] OffsetDiffs { get; private set; }
 }

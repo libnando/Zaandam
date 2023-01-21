@@ -41,14 +41,21 @@ namespace Zaandam.Api.Controllers
             return Ok(response);
         }
 
-        private async Task<IActionResult> PostDocument(string id, DocPositionEnum docPosition, string data)
+        /// <summary>
+        /// Create the document.
+        /// </summary>
+        /// <param name="key">Key of the document.</param>
+        /// <param name="docPosition">The position of document (left/right).</param>
+        /// <param name="data">Data of the document.</param>
+        /// <returns>Document response data.</returns>
+        private async Task<IActionResult> PostDocument(string key, DocPositionEnum docPosition, string data)
         {
-            var response = await _documentService.Create(id, docPosition, data);
+            var response = await _documentService.Create(key, docPosition, data);
 
             if (response.Errors.Any())
                 return BadRequest(response);
 
-            return Created($"/{response.Data.First().Id}", response);
+            return Created($"/{response.Data.First().Key}", response);
         }
     }
 }

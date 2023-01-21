@@ -4,6 +4,9 @@ using Zaandam.Domain.Models;
 
 namespace Zaandam.Infrastructure.Contexts.Configurations;
 
+/// <summary>
+/// EF configuration.
+/// </summary>
 public class DocumentConfiguration : IEntityTypeConfiguration<Document>
 {
     public void Configure(EntityTypeBuilder<Document> builder)

@@ -4,21 +4,37 @@ using Zaandam.Domain.Contracts.UnitsOfWork;
 using Zaandam.Domain.DTOs.Responses;
 using Zaandam.Domain.Enums;
 using Zaandam.Domain.Extensions;
+using Zaandam.Domain.Helpers;
 using Zaandam.Domain.Models;
 
 namespace Zaandam.Domain.Services;
 
+/// <summary>
+/// Class to handle document services.
+/// </summary>
 public class DocumentService : IDocumentService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDocumentRepository _documentRepository;
-    
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="unitOfWork">Unit of work db context.</param>
+    /// <param name="documentRepository">Document repository.</param>
     public DocumentService(IUnitOfWork unitOfWork, IDocumentRepository documentRepository)
     {
         _documentRepository = documentRepository;
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    /// Create the document.
+    /// </summary>
+    /// <param name="key">Key of the document.</param>
+    /// <param name="docPosition">The position of document (left/right).</param>
+    /// <param name="data">Data of the document.</param>
+    /// <returns>Document response data.</returns>
     public async Task<ZResponse<DocumentResponse>> Create(string key, DocPositionEnum docPosition, string data)
     {
         var document = new Document(key, data, docPosition);
@@ -37,6 +53,11 @@ public class DocumentService : IDocumentService
         return new ZResponse<DocumentResponse>(documentResponse);
     }
 
+    /// <summary>
+    /// Get the diffs of the documents.
+    /// </summary>
+    /// <param name="key">Key of the document.</param>
+    /// <returns>The diffs of the documents.</returns>
     public async Task<ZResponse<DocumentDiffResponse>> GetDiff(string key)
     {
         var docs = await _documentRepository.AllByKeyAsync(key);
@@ -48,14 +69,17 @@ public class DocumentService : IDocumentService
             return new ZResponse<DocumentDiffResponse>(new ErrorResponse("Falha ao recuperar documentos"));
         }
 
-        //TODO
-        var diffs = Array.Empty<ChunkDiffResponse>();
-        var equal = true;
-        var equalSize = true;
+        var (equalsData, equalsSize, size, offsetDiffs) = DocumentCompareHelper.Compare(docLeft.Data, docRight.Data);
+        var response = new DocumentDiffResponse(equalsData, equalsSize, size, offsetDiffs);
 
-        return new ZResponse<DocumentDiffResponse>(new DocumentDiffResponse(equal, equalSize, diffs));
+        return new ZResponse<DocumentDiffResponse>(response);
     }
 
+    /// <summary>
+    /// Validate the document.
+    /// </summary>
+    /// <param name="document">The document to validate.</param>
+    /// <returns>Validation data.</returns>
     private static (bool IsValid, IEnumerable<ErrorResponse> errors) ValidateDocument(Document document)
     {
         var errors = new List<ErrorResponse>();

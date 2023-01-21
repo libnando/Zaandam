@@ -26,10 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Unit\Common\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Zaandam.Api\Zaandam.Api.csproj" />
     <ProjectReference Include="..\..\src\Zaandam.Domain\Zaandam.Domain.csproj" />
     <ProjectReference Include="..\..\src\Zaandam.Infrastructure\Zaandam.Infrastructure.csproj" />
