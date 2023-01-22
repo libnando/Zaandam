@@ -90,6 +90,52 @@ public class DocumentServiceTests
         response.Data.Should().Contain(item => item.OffsetDiffs.Contains(5));
     }
 
+    [Fact(DisplayName = "Should return size and data equals when get diff from documents with equals data")]
+    public async Task GetDiff_DocumentsWithEqualData_ShouldReturnSizeAndDataEqualsTrue()
+    {
+        // arrange
+        var (repositoryMock, service) = DocumentContextMock();
+        var key = Guid.NewGuid().ToString();
+        var documents = new List<Document>()
+        {
+            new Document(key, "cGF5YnlyZCA9KQ==", DocPositionEnum.Left),
+            new Document(key, "cGF5YnlyZCA9KQ==", DocPositionEnum.Right)
+        };
+
+        repositoryMock.Setup(r => r.AllByKeyAsync(key)).Returns(Task.FromResult<IEnumerable<Document>>(documents));
+
+        // act
+        var response = await service.GetDiff(key);
+
+        // assert
+        response.Errors.Should().HaveCount(0);
+        response.Data.Should().HaveCount(1);
+        response.Data.Should().Contain(item => item.EqualsSize.Equals(true));
+        response.Data.Should().Contain(item => item.EqualsData.Equals(true));
+        response.Data.Should().Contain(item => !item.OffsetDiffs.Any());
+    }
+
+    [Fact(DisplayName = "Should return error response when get diff from invalid documents")]
+    public async Task GetDiff_InvalidDocuments_ShouldReturnErrorResponse()
+    {
+        // arrange
+        var (repositoryMock, service) = DocumentContextMock();
+        var key = Guid.NewGuid().ToString();
+        var documents = new List<Document>()
+        {
+            new Document(key, "cGF5YnlyZCA9KQ==", DocPositionEnum.Left)
+        };
+
+        repositoryMock.Setup(r => r.AllByKeyAsync(key)).Returns(Task.FromResult<IEnumerable<Document>>(documents));
+
+        // act
+        var response = await service.GetDiff(key);
+
+        // assert
+        response.Errors.Should().HaveCount(1);
+        response.Errors.Should().Contain(error => error.Message.Equals("Fail to retrieve docs."));
+    }
+
     private static (Mock<IDocumentRepository> RepositoryMock, IDocumentService Service) DocumentContextMock()
     {
         var unitOfWorkMock = new Mock<IUnitOfWork>();
