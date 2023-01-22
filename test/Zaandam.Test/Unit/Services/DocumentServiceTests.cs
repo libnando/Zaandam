@@ -44,7 +44,7 @@ public class DocumentServiceTests
 
         // assert
         response.Errors.Should().HaveCount(1);
-        response.Errors.Should().Contain(error => error.Message.Equals("Number of characters in field ´Key´ must be less than 50."));
+        response.Errors.Should().Contain(error => error.Message.Equals("Number of characters in field Key must be less than 50."));
     }
 
     [Fact(DisplayName = "Should return success response when create a valid document")]

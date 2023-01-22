@@ -66,7 +66,7 @@ public class DocumentService : IDocumentService
 
         if (docLeft is null || docRight is null)
         {
-            return new ZResponse<DocumentDiffResponse>(new ErrorResponse("Falha ao recuperar documentos"));
+            return new ZResponse<DocumentDiffResponse>(new ErrorResponse("Fail to retrieve docs."));
         }
 
         var (equalsData, equalsSize, size, offsetDiffs) = DocumentCompareHelper.Compare(docLeft.Data, docRight.Data);
@@ -87,7 +87,7 @@ public class DocumentService : IDocumentService
 
         if ($"{document.Key}".Length > keyMaxChars)
         {
-            errors.Add(new ErrorResponse($"Number of characters in field ´{nameof(document.Key)}´ must be less than {keyMaxChars}."));
+            errors.Add(new ErrorResponse($"Number of characters in field {nameof(document.Key)} must be less than {keyMaxChars}."));
         }            
 
         if (string.IsNullOrWhiteSpace(document.Data) || !document.Data.IsBase64String())
