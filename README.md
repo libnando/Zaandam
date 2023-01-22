@@ -14,3 +14,11 @@ dotnet run --project src/Zaandam.Api --urls "http://localhost:5111;https://local
 ## Fun time
 
 Now just access the url `https://localhost:5122/swagger/index.html` and start using =)
+
+---------------------
+
+## Running the tests
+
+```bash
+dotnet test
+```
