@@ -19,7 +19,7 @@ dotnet run --project src/Zaandam.Api --urls "http://localhost:5111"
 
 ## Fun time
 
-Now just access the url `https://localhost:5122/swagger/index.html` and start using =)
+Now just access the url `http://localhost:5111/swagger/index.html` and start using =)
 
 ---------------------
 
