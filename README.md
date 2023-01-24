@@ -1,14 +1,20 @@
 # Zaandam API
 
-## Running API Locally
+## Running API with docker infrastructure
 
-First, you will need config the `ConnectionStrings`.
+```bash
+docker-compose up -d
+```
+
+## Running API locally
+
+You will need config the `ConnectionStrings`.
 Then, open the terminal in the project directory and:
 
 ```bash
 dotnet restore
 dotnet build
-dotnet run --project src/Zaandam.Api --urls "http://localhost:5111;https://localhost:5122"
+dotnet run --project src/Zaandam.Api --urls "http://localhost:5111"
 ```
 
 ## Fun time

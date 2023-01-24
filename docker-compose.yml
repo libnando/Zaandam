@@ -1,0 +1,48 @@
+version: '3.4'
+
+services:
+
+  mssql:
+    image: "mcr.microsoft.com/mssql/server"
+    container_name: zaandam-mssql
+    environment:
+      SA_PASSWORD: "Develop@123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1433:1433
+  
+  tests:
+    container_name: zaandam-integration-tests
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    depends_on:
+      - mssql      
+    env_file:
+      - .env
+    command:
+      [
+        "./docker-tests.sh"
+      ]
+      
+  api:
+    container_name: zaandam-api
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - 5111:80
+    depends_on: 
+      - mssql
+    command:
+      [
+        "./docker-wait-for-it.sh",
+        "mssql:1433",
+        "-t",
+        "30",
+        "--",
+        "dotnet", 
+        "Zaandam.Api.dll"
+      ]
