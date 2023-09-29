@@ -1,5 +1,6 @@
 using Zaandam.Api.Configuration;
 using Zaandam.Infrastructure.Contexts;
+using Zaandam.Infrastructure.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -30,6 +31,7 @@ app.UseRouting();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+//app.UseMiddleware<AuthMiddleware>(configuration.GetValue<string>("authKey"));
 
 app.Run();
 
